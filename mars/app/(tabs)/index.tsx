@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useCallback } from "react";
 import { View, Text, StyleSheet, FlatList, Alert } from "react-native";
 import { router } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { PrimaryButton, SecondaryButton, TestCard } from "@/components";
+import { useFocusEffect } from "@react-navigation/native";
 
 export default function HomeScreen() {
   const [officerInfo, setOfficerInfo] = useState({
@@ -12,13 +13,14 @@ export default function HomeScreen() {
   });
   const [previousTests, setPreviousTests] = useState([]);
 
-  useEffect(() => {
-    loadPreviousTests();
-  }, []);
-
+  useFocusEffect(
+    useCallback(() => {
+      loadPreviousTests();
+    }, [])
+  );
   const loadPreviousTests = async () => {
     try {
-      const tests = await AsyncStorage.getItem("tests");
+      const tests = await AsyncStorage.getItem("@mars2_tests");
       if (tests) {
         setPreviousTests(JSON.parse(tests));
       }

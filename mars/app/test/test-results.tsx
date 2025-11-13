@@ -3,11 +3,11 @@ import { View, Text, StyleSheet, ScrollView } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { PrimaryButton, InfoBox, StatusBadge } from "@/components";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function TestResultsScreen() {
   const testData = useLocalSearchParams();
 
-  // Simulated results - in a real app, this would come from image analysis
   const results = {
     status: "POSITIVE",
     detectedSubstances: [
@@ -21,7 +21,6 @@ export default function TestResultsScreen() {
   };
 
   const handleContinue = async () => {
-    // Save the test results
     const finalTestData = {
       testId: testData.testId || Date.now().toString(),
       timestamp: new Date().toISOString(),
@@ -48,17 +47,25 @@ export default function TestResultsScreen() {
       },
     };
 
-    // In a real app, save to AsyncStorage here
-    // For now, just navigate to confirmation
+    // SAVE TO STORAGE
+    try {
+      const existingTests = await AsyncStorage.getItem("@mars2_tests");
+      const tests = existingTests ? JSON.parse(existingTests) : [];
+      tests.push(finalTestData);
+      await AsyncStorage.setItem("@mars2_tests", JSON.stringify(tests));
+      console.log("✅ Test saved successfully!", finalTestData.testId);
+    } catch (error) {
+      console.error("❌ Error saving test:", error);
+    }
+
     router.push({
-      pathname: "./confirmation",
+      pathname: "/test/confirmation",
       params: {
         testId: finalTestData.testId,
         status: results.status,
       },
     });
   };
-
   return (
     <ScrollView style={styles.container}>
       <View style={styles.content}>
