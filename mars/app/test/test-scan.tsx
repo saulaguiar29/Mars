@@ -80,7 +80,7 @@ export default function TestScanScreen() {
       "Are you sure you want to cancel? All data will be lost.",
       [
         { text: "No", style: "cancel" },
-        { text: "Yes", onPress: () => router.push({ pathname: "/tabs" }) },
+        { text: "Yes", onPress: () => router.push({ pathname: "/(tabs)" }) },
       ]
     );
   };

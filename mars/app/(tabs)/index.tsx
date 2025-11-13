@@ -28,7 +28,7 @@ export default function HomeScreen() {
   };
 
   const handleStartNewTest = () => {
-    router.push("./test/subject-details");
+    router.push("/test/subject-details");
   };
 
   const handleSync = () => {

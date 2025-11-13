@@ -14,7 +14,7 @@ export default function ConfirmationScreen() {
 
   const handleGoHome = () => {
     // Navigate back to home and refresh
-    router.push({ pathname: "/tabs" });
+    router.push({ pathname: "/(tabs)" });
   };
 
   return (
