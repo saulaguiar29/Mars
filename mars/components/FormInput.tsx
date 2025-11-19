@@ -32,6 +32,7 @@ export default function FormInput({
         style={[styles.input, error && styles.inputError]}
         value={value}
         onChangeText={onChangeText}
+        placeholderTextColor="#888"
         {...textInputProps}
       />
       {error && <Text style={styles.errorText}>{error}</Text>}
@@ -46,7 +47,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 16,
     fontWeight: "600",
-    color: "#333",
+    color: "#1a1a1a",
     marginBottom: 8,
   },
   required: {
@@ -57,6 +58,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 12,
     fontSize: 16,
+    color: "#1a1a1a",
     borderWidth: 1,
     borderColor: "#ddd",
   },

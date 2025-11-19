@@ -8,6 +8,7 @@ import {
   ScrollView,
   Alert,
   Platform,
+  KeyboardAvoidingView,
 } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
@@ -50,7 +51,7 @@ export default function TestInformationScreen() {
     };
 
     router.push({
-      pathname: "./id-verification",
+      pathname: "/test/id-verification",
       params: allData,
     });
   };
@@ -74,14 +75,24 @@ export default function TestInformationScreen() {
   };
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.content}>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={100}
+    >
+      <ScrollView
+        style={styles.scrollView}
+        contentContainerStyle={styles.content}
+        keyboardShouldPersistTaps="handled"
+      >
         <FormInput
           label="Test ID"
           value={formData.testId}
           onChangeText={(text) => setFormData({ ...formData, testId: text })}
           placeholder="Enter test ID"
           autoCapitalize="characters"
+          keyboardType="default"
+          returnKeyType="next"
           required
         />
 
@@ -91,6 +102,8 @@ export default function TestInformationScreen() {
           onChangeText={(text) => setFormData({ ...formData, lotNumber: text })}
           placeholder="Enter lot number"
           autoCapitalize="characters"
+          keyboardType="default"
+          returnKeyType="next"
           required
         />
 
@@ -179,9 +192,11 @@ export default function TestInformationScreen() {
             value={formData.notes}
             onChangeText={(text) => setFormData({ ...formData, notes: text })}
             placeholder="Enter any additional notes"
+            placeholderTextColor="#888"
             multiline
             numberOfLines={4}
             textAlignVertical="top"
+            returnKeyType="done"
           />
         </View>
 
@@ -198,8 +213,8 @@ export default function TestInformationScreen() {
             icon="arrow-forward"
           />
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -208,8 +223,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#f5f5f5",
   },
+  scrollView: {
+    flex: 1,
+  },
   content: {
     padding: 16,
+    paddingBottom: 32,
   },
   formGroup: {
     marginBottom: 20,
@@ -217,7 +236,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 16,
     fontWeight: "600",
-    color: "#333",
+    color: "#1a1a1a",
     marginBottom: 8,
   },
   required: {
@@ -228,6 +247,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 12,
     fontSize: 16,
+    color: "#1a1a1a",
     borderWidth: 1,
     borderColor: "#ddd",
   },
@@ -253,7 +273,7 @@ const styles = StyleSheet.create({
   },
   segmentText: {
     fontSize: 14,
-    color: "#666",
+    color: "#444",
     fontWeight: "600",
   },
   segmentTextActive: {
@@ -270,7 +290,7 @@ const styles = StyleSheet.create({
   },
   dateText: {
     fontSize: 16,
-    color: "#333",
+    color: "#1a1a1a",
     marginLeft: 12,
   },
   buttonContainer: {

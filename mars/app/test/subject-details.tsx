@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { View, StyleSheet, ScrollView, Alert } from "react-native";
+import {
+  View,
+  StyleSheet,
+  ScrollView,
+  Alert,
+  KeyboardAvoidingView,
+  Platform,
+} from "react-native";
 import { router } from "expo-router";
 import {
   FormInput,
@@ -12,11 +19,10 @@ export default function SubjectDetailsScreen() {
   const [formData, setFormData] = useState({
     subjectId: "",
     caseNumber: "",
-    officerName: "Officer Smith", // Pre-filled from officer info
+    officerName: "Officer Smith",
   });
 
   const handleNext = () => {
-    // Validate required fields
     if (!formData.subjectId.trim()) {
       Alert.alert("Required Field", "Please enter Subject ID");
       return;
@@ -30,9 +36,8 @@ export default function SubjectDetailsScreen() {
       return;
     }
 
-    // Navigate to next screen with data
     router.push({
-      pathname: "./test-information",
+      pathname: "/test/test-information",
       params: formData,
     });
   };
@@ -49,8 +54,16 @@ export default function SubjectDetailsScreen() {
   };
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.content}>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={100}
+    >
+      <ScrollView
+        style={styles.scrollView}
+        contentContainerStyle={styles.content}
+        keyboardShouldPersistTaps="handled"
+      >
         <InfoBox message="All fields marked with * are required" type="info" />
 
         <FormInput
@@ -59,6 +72,8 @@ export default function SubjectDetailsScreen() {
           onChangeText={(text) => setFormData({ ...formData, subjectId: text })}
           placeholder="Enter subject ID"
           autoCapitalize="characters"
+          keyboardType="default"
+          returnKeyType="next"
           required
         />
 
@@ -70,6 +85,8 @@ export default function SubjectDetailsScreen() {
           }
           placeholder="Enter case number"
           autoCapitalize="characters"
+          keyboardType="default"
+          returnKeyType="next"
           required
         />
 
@@ -81,6 +98,8 @@ export default function SubjectDetailsScreen() {
           }
           placeholder="Enter officer name"
           autoCapitalize="words"
+          keyboardType="default"
+          returnKeyType="done"
           required
         />
 
@@ -97,8 +116,8 @@ export default function SubjectDetailsScreen() {
             icon="arrow-forward"
           />
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -107,8 +126,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#f5f5f5",
   },
+  scrollView: {
+    flex: 1,
+  },
   content: {
     padding: 16,
+    paddingBottom: 32,
   },
   buttonContainer: {
     marginTop: 32,
